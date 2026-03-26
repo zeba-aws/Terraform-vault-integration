@@ -3,15 +3,16 @@ provider "aws" {
 }
 
 provider "vault" {
-  address = "http://13.233.172.196:8200"
+  address          = "http://13.126.166.229:8200"
   skip_child_token = true
 
   auth_login {
     path = "auth/approle/login"
-
+    
     parameters = {
-      role_id = "2a0c0d91-02d5-7500-764a-b9fe13aee628"
-      secret_id = " 75d20a5b-7094-5adf-245e-24e7f47b23cb"
+      role_id   = "6b20e7f4-6147-cf43-92ad-080019019e91"
+      secret_id = "90e568cf-45e1-7e8e-788e-d4f41d22c136"
+
     }
   }
 }
@@ -21,12 +22,12 @@ data "vault_kv_secret_v2" "example" {
   name  = "kv" // change it according to your secret
 }
 
-resource "aws_instance" "terraform vault" {
+resource "aws_instance" "terraformvault" {
   ami           = "ami-05d2d839d4f73aafb"
   instance_type = "t3.micro"
 
   tags = {
-    Name = "test"
+    Name   = "test"
     Secret = data.vault_kv_secret_v2.example.data["test"]
   }
 }
